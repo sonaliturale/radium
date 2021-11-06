@@ -1,0 +1,59 @@
+SONALI@DESKTOP-5MUTECV MINGW64 ~
+$ mkdir assignment2
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~
+$ cd assignment2/
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2
+$ mkdir source
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2
+$ mkdir destination
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2
+$ cd source
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/source
+$ cat > myfile.txt
+Hi there!
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/source
+$ cd ..
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2
+$ cp -r source/. destination/
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2
+$ cd destination/
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/destination
+$ ls
+myfile.txt
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/destination
+$ rm myfile.txt
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/destination
+$ cd ..
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2
+$ mv source/myfile.txt destination/
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2
+$ cd destination/
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/destination
+$ cat >> myfile.txt
+functionup1
+functionup2
+functionup3
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/destination
+$ grep -i "functionup1" myfile.txt
+functionup1
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/destination
+$ grep -i "functionup3" myfile.txt
+functionup3
+
+SONALI@DESKTOP-5MUTECV MINGW64 ~/assignment2/destination
+$ cd ..
