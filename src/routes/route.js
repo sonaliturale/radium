@@ -9,8 +9,8 @@ router.get('/test-me', function (req, res) {
     res.send('My first ever api!')
 });
 
-router.post('/createUser',  UserController.createUser  );
-router.get('/getAllUsers',  UserController.getUsersData  );
+
+router.get('/getcoins',  UserController.getcoins );
 
 
 module.exports = router;
