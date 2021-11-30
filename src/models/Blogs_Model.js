@@ -25,7 +25,7 @@ const BlogsSchema = new mongoose.Schema({
     tags: [String],
     category: {
         type: String,
-        required: true
+        // required: true
     },
     subcategory: [String],
     createdAt:
@@ -36,12 +36,12 @@ const BlogsSchema = new mongoose.Schema({
     updatedAt:
     {
         type: Date,
-        default: Date.now
+        default: null
     },
     deletedAt:
     {
         type: Date,
-        default: Date.now
+        default: null,
     },
     isDeleted: {
         type: Boolean,
@@ -49,7 +49,7 @@ const BlogsSchema = new mongoose.Schema({
     },
     publishedAt: {
         type: Date,
-        default: Date.now
+        default: null
     },
     isPublished: {
         type: Boolean,
@@ -58,7 +58,6 @@ const BlogsSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 module.exports = mongoose.model('BlogsDB', BlogsSchema)
-
     
 
 
