@@ -26,20 +26,18 @@ const createReview = async function (req, res) {
         }
         const { reviewedBy, rating } = requestBody;
 
-        if (!isValid(reviewedBy)) {
-            res.status(400).send({ status: false, message: `reviewername is required` })
-            return
-        }
         if ((typeof (rating) === 'number') && (rating === 1 || rating === 2 || rating === 3 || rating === 4 || rating === 5)) {
 
             const reviewData = {
                 bookId: req.params.bookId,
-                reviewedBy,
                 rating,
                 reviewedAt: new Date()
             }
             if (isValid(req.body.review)) {
                 reviewData['review'] = req.body.review.trim();
+            }
+            if (isValid(reviewedBy)) {
+                reviewData['reviewedBy'] = req.body.reviewedBy.trim();
             }
             await reviewModel.create(reviewData)
             const updatedBook = await bookModel.findOneAndUpdate({ _id: req.params.bookId, isDeleted: false }, { $inc: { reviews: 1 } }, { new: true })
