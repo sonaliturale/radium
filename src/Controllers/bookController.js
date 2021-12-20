@@ -168,7 +168,7 @@ const updateBook = async function (req, res) {
             res.status(400).send({ status: false, message: `${req.userId} is not a valid token id` })
             return
         }
-        const book = await bookModel.findOne({ _id: req.params.bookId, isDeleted: false, deletedAt: null })
+        const book = await bookModel.findOne({ _id: req.params.bookId, isDeleted: false})
         if (!book) {
             res.status(404).send({ status: false, message: `Book not found` })
             return
@@ -228,7 +228,7 @@ const deleteBookByID = async function (req, res) {
             return
         }
 
-        const Book = await bookModel.findOne({ _id: bookId, isDeleted: false, deletedAt: null })
+        const Book = await bookModel.findOne({ _id: bookId, isDeleted: false})
 
         if (!Book) {
             res.status(404).send({ status: false, message: `Book not found` })
