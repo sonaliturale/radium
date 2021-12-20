@@ -15,7 +15,7 @@ const validateEmail = function (req, res, next) {
             return res.status(400).send({ status: false, msg: "Please provide email" })
         }
 
-        let id = req.body.email
+        let id = req.body.email.trim()
         let verifyemailid = validator.validate(id)
         if (verifyemailid) {
             return next();

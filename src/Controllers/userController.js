@@ -104,7 +104,7 @@ const login = async function (req, res) {
             return res.status(400).send({ status: false, message: 'password is required' })
         }
 
-        const User = await userModel.findOne({ email, password });
+        const User = await userModel.findOne({ email:email.trim(), password:password.trim() });
         if (!User) {
             return res.status(401).send({ status: false, msg: "invalid email or password" });
         }
