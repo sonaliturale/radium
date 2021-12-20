@@ -67,7 +67,10 @@ const createBook = async function (req, res) {
         const release = releasedAt.split("-");
         if (release[0].length == 4 && release[1].length == 2 && release[2].length == 2) {
             if ((validateDate(releasedAt, responseType = "boolean") == true)) {
-                let savedbook = await bookModel.create({ title, excerpt, userId, ISBN, category, subcategory, releasedAt });
+                const bookdetail = {
+                    title: title.trim(), excerpt: excerpt.trim(), userId: userId.trim(), ISBN: ISBN.trim(), category: category.trim(), subcategory: subcategory.trim(), releasedAt: releasedAt.trim()
+                }
+                let savedbook = await bookModel.create(bookdetail);
                 return res.status(201).send({ status: true, message: 'Success', data: savedbook });
             } else {
                 return res.status(400).send({ status: false, message: ' Please provide corrects releasedAt' })
@@ -147,8 +150,8 @@ const getBook = async function (req, res) {
             "reviwersData": reviewsData
         }
         return res.status(200).send({ status: true, message: "successfull", data: bookWithReviews })
-    
- } catch (err) {
+
+    } catch (err) {
         console.error(err)
         res.status(500).send('Server Error')
     }
@@ -178,7 +181,7 @@ const updateBook = async function (req, res) {
         const filterQuery = {};
         if (isValid(req.body.title)) {
             const checkuniqueForTitle = await bookModel.find({ title: req.body.title })
-            if (!(checkuniqueForTitle.length==0)) {
+            if (!(checkuniqueForTitle.length == 0)) {
                 return res.status(400).send({ status: false, message: `${req.body.title} is not unique` })
             }
             filterQuery['title'] = req.body.title.trim()
@@ -188,12 +191,12 @@ const updateBook = async function (req, res) {
         }
         if (isValid(req.body.ISBN)) {
             const checkuniqueForISBN = await bookModel.find({ ISBN: req.body.ISBN })
-            if (!(checkuniqueForISBN.length==0)) {
+            if (!(checkuniqueForISBN.length == 0)) {
                 return res.status(400).send({ status: false, message: `${req.body.ISBN} is not unique` })
             }
             filterQuery['ISBN'] = req.body.ISBN.trim()
         }
-        if (isValid(req.body.releasedAt)) {     
+        if (isValid(req.body.releasedAt)) {
             const release = req.body.releasedAt.split("-");
             if (release[0].length == 4 && release[1].length == 2 && release[2].length == 2) {
                 if ((validateDate(req.body.releasedAt, responseType = "boolean") == true)) {

@@ -60,7 +60,7 @@ const createuser = async function (req, res) {
             return res.status(400).send({ status: false, message: ' Please provide valid password' })
         }
 
-        const userDetails= { title, name, phone, email, password }
+        const userDetails= { title, name, phone, email, password, address }
         if(address){
             if('address.street'){
                 if (!validString(address.street)) {
