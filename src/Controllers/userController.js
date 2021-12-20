@@ -8,6 +8,11 @@ const isValid = function (value) {
     if (typeof (value) === 'string' && value.trim().length > 0) { return true } //to check only string is comming and after trim value should be their than only it will be true.
 }
 
+const validString = function(value) {
+    if (typeof value === 'string' && value.trim().length === 0) return false //it checks whether the string contain only space or not 
+    return true;
+}
+
 const isValidRequestBody = function (requestBody) {
     return Object.keys(requestBody).length > 0
 }
@@ -51,13 +56,35 @@ const createuser = async function (req, res) {
         if (!isValid(password)) {
             return res.status(400).send({ status: false, message: ' Please provide password' })
         }
-        if(password.trim().length>7 && password.trim().length<16){
-        let saveduser = await userModel.create({ title, name, phone, email, password, address });
-        res.status(201).send({ status: true, message: "User created successfully", data: saveduser });
-        }else{
+        if (!(password.trim().length > 7 && password.trim().length < 16)) {
             return res.status(400).send({ status: false, message: ' Please provide valid password' })
         }
-    } catch (err) {
+
+        const userDetails= { title, name, phone, email, password }
+        if(address){
+            if('address.street'){
+                if (!validString(address.street)) {
+                    return res.status(400).send({ status: false, message: ' Please provide street' })
+                }
+                userDetails[address.street]=address.street
+            }
+            if('address.city'){
+                if (!validString(address.city)) {
+                    return res.status(400).send({ status: false, message: ' Please provide city' })
+                }
+                userDetails[address.city]=address.city
+            }
+            if('address.pincode'){
+                if (!validString(address.pincode)) {
+                    return res.status(400).send({ status: false, message: ' Please provide pincode' })
+                }
+                userDetails[address.pincode]=address.pincode
+            }
+        }
+        let saveduser = await userModel.create(userDetails);
+        res.status(201).send({ status: true, message: "User created successfully", data: saveduser });
+
+} catch (err) {
         console.log(err)
         res.status(500).send({ status: false, msg: 'Server Error' })
     }
@@ -77,7 +104,7 @@ const login = async function (req, res) {
             return res.status(400).send({ status: false, message: 'password is required' })
         }
 
-        const User = await userModel.findOne({ email, password});
+        const User = await userModel.findOne({ email, password });
         if (!User) {
             return res.status(401).send({ status: false, msg: "invalid email or password" });
         }
@@ -85,7 +112,7 @@ const login = async function (req, res) {
         let payload = {
             userId: User._id,
             iat: Math.floor(Date.now() / 1000), //	The iat (issued at) identifies the time at which the JWT was issued. [Date.now() / 1000 => means it will give time that is in seconds(for January 1, 1970)] (abhi ka time de gha jab bhi yhe hit hugha)
-            exp: Math.floor(Date.now() / 1000) + 1/2 * 60 * 60 //The exp (expiration time) identifies the expiration time on or after which the token MUST NOT be accepted for processing.   (abhi ke time se 10 ganta tak jalee gha ) Date.now() / 1000=> seconds + 60x60min i.e 1hr and x10 gives 10hrs.
+            exp: Math.floor(Date.now() / 1000) + 1 / 2 * 60 * 60 //The exp (expiration time) identifies the expiration time on or after which the token MUST NOT be accepted for processing.   (abhi ke time se 10 ganta tak jalee gha ) Date.now() / 1000=> seconds + 60x60min i.e 1hr and x10 gives 10hrs.
         };
 
         let token = jwt.sign(payload, "radium");

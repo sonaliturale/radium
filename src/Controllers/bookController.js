@@ -124,15 +124,31 @@ const getBook = async function (req, res) {
             return res.status(400).send({ status: false, message: 'Please provide valid bookId' })
         }
 
-        const book = await bookModel.findOne({ _id: bookId, isDeleted: false })
-        if (!book) {
+        const checkbookId = await bookModel.findOne({ _id: bookId, isDeleted: false })
+        if (!checkbookId) {
             return res.status(404).send({ status: false, message: 'No book found' })
         }
 
         const reviewsData = await reviewModel.find({ bookId: bookId, isDeleted: false })
-        book['reviewData'] = reviewsData;
-        return res.status(200).send({ status: true, message: 'Books list', data: book })
-    } catch (err) {
+
+        const bookWithReviews = {
+            "_id": checkbookId._id,
+            "title": checkbookId.title,
+            "excerpt": checkbookId.excerpt,
+            "userId": checkbookId.userId,
+            "category": checkbookId.category,
+            "subcategory": checkbookId.subcategory,
+            "isDeleted": checkbookId.isDeleted,
+            "reviews": checkbookId.reviews,
+            "deletedAt": checkbookId.deletedAt, // if deleted is true deletedAt will have a date 2021-09-17T04:25:07.803Z,
+            "releasedAt": checkbookId.releasedAt,
+            "createdAt": checkbookId.createdAt,
+            "updatedAt": checkbookId.updatedAt,
+            "reviwersData": reviewsData
+        }
+        return res.status(200).send({ status: true, message: "successfull", data: bookWithReviews })
+    
+ } catch (err) {
         console.error(err)
         res.status(500).send('Server Error')
     }
