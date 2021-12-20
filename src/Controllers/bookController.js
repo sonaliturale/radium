@@ -4,6 +4,7 @@ const reviewModel = require('../models/reviewModel')
 const validateDate = require("validate-date");
 const mongoose = require('mongoose');
 
+
 const isValid = function (value) {
     if (typeof (value) === 'undefined' || typeof (value) === 'null') { return false } //if undefined or null occur rather than what we are expecting than this particular feild will be false.
     if (value.trim().length == 0) { return false } //if user give spaces not any string eg:- "  " =>here this value is empty, only space is there so after trim if it becomes empty than false will be given. 
