@@ -3,7 +3,7 @@ const redis = require("redis");
 
 const { promisify } = require("util");
 
-//Connect to redis
+//1. Connect to the redis server
 const redisClient = redis.createClient(
   13190,
   "redis-13190.c301.ap-south-1-1.ec2.cloud.redislabs.com",
@@ -19,10 +19,7 @@ redisClient.on("connect", async function () {
 
 
 
-//1. connect to the server
-//2. use the commands :
-
-//Connection setup for redis
+//2. Prepare the functions for each command
 
 const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
 const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
@@ -35,6 +32,8 @@ const createAuthor = async function (req, res) {
 };
 
 const fetchAuthorProfile = async function (req, res) {
+
+//3. Start using the redis commad
   let cahcedProfileData = await GET_ASYNC(`${req.params.authorId}`)
   if(cahcedProfileData) {
     res.send(cahcedProfileData)
